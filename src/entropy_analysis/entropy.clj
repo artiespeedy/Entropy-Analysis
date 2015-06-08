@@ -52,14 +52,29 @@
 ; Count the amount of counts in each state, create a percentage for each count
 (defn markov-percents
   [data]
+  ; ks is an array of the different possible states
+  ; mk counts is an array like this:
+  ;{:state1 [[:state2 10] [:state3 2]] 
+  ; :state2 [[:state1 20] [:state3 5]] 
+  ; :state3 [[:state1 15] [:state2 1]]})
   (let [mkcounts (markov-counts data)
         ks (keys mkcounts)]
-    (loop [percents {} ks ks]
-      (if (< 0 (count mcounts))
-        (let [total (reduce #(+ %1 (rest %2)) 0 (get mkcounts (first ks)))]
-
-        percents))))
+    (loop [mkpercents {} ks ks]
+      (if (< 0 (count ks))
+        ; Divide the count by the total and shift it by the last percent
+        (let [total (reduce #(+ %1 (first (rest %2))) 0 (get mkcounts (first ks)))
+              ; Counts is format [[:state1 10] [:state2 7]]
+              counts (get mkcounts (first ks)) 
+              percents (loop [counts counts percs [] rangeStart 0]
+                         (if (< 0 (count counts))
+                           (let [percent (/ (first (rest (first counts))) total)]
+                             (recur (rest counts) (conj percs (conj [] rangeStart (+ percent rangeStart) (first (first counts)))) (+ percent rangeStart)))
+                           percs))]
+          (recur (assoc mkpercents (first ks) percents) (rest ks)))
+        mkpercents))))
 
 
 ; Examples
 (markov-counts '(1 2 3 3 2 1 4 5 3 2 4 5))
+(def mp (markov-percents '(1 2 3 3 2 1 4 5 3 2 4 5)))
+(next-state mp 2 (/ 2 4))

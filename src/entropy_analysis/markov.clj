@@ -1,8 +1,9 @@
+(ns entropy-analysis.markov)
 (def markov-chain {:state1 [[0 25 :state2] [25 50 :state3]] 
                    :state2 [[50 100 :state1] [0 25 :state3]] 
                    :state3 [[0 25 :state1] [25 50 :state2]]})
 
-; Rand-val = 0-99 (inclusive on both 0 and 99
+; Rand-val = 0-99 (inclusive on both 0 and 99)
 (defn next-state
   [machine cstate-key rand-val]
   ; Get all possible next states
@@ -11,7 +12,7 @@
       (if (> (count possible-states) 0)
         (let [state (first possible-states)]
           ; Find a value that fits the range
-          (if (and (> rand-val (first state)) (< rand-val (first (rest state))))
+          (if (and (>= rand-val (first state)) (< rand-val (first (rest state))))
             (last state)
             (recur (rest possible-states))))
         ; If there was no range that fit the value, return the original key
