@@ -67,7 +67,7 @@
               counts (get mkcounts (first ks)) 
               percents (loop [counts counts percs [] rangeStart 0]
                          (if (< 0 (count counts))
-                           (let [percent (/ (first (rest (first counts))) total)]
+                           (let [percent (* (/ (first (rest (first counts))) total) 100)]
                              (recur (rest counts) (conj percs (conj [] rangeStart (+ percent rangeStart) (first (first counts)))) (+ percent rangeStart)))
                            percs))]
           (recur (assoc mkpercents (first ks) percents) (rest ks)))
@@ -75,6 +75,6 @@
 
 
 ; Examples
-(markov-counts '(1 2 3 3 2 1 4 5 3 2 4 5))
-(def mp (markov-percents '(1 2 3 3 2 1 4 5 3 2 4 5)))
-(next-state mp 2 (/ 2 4))
+; (markov-counts '(1 2 3 3 2 1 4 5 3 2 4 5))
+; (def mp (markov-percents '(1 2 3 3 2 1 4 5 3 2 4 5)))
+; (next-state mp 2 80)
