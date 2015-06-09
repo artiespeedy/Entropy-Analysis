@@ -1,6 +1,6 @@
-# markov-recog
+# entropy-analysis
 
-An in progress piece of software to preform handwriting recognition.
+Software to perform entropy analysis on data. 
 
 ## Usage
 

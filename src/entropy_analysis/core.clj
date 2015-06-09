@@ -2,9 +2,10 @@
   (:require [quil.core :as q]
             [quil.middleware :as m]))
 
-(load "entropy")
-(load "grid-precision")
-(load "markov")
+(refer 'entropy-analysis.markov)
+(refer 'entropy-analysis.entropy)
+(refer 'entropy-analysis.input)
+(refer 'entropy-analysis.pprecision)
 
 (defn setup []
   ; Set frame rate to 30 frames per second.

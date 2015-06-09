@@ -1,4 +1,5 @@
 (ns entropy-analysis.markov)
+
 (def markov-chain {:state1 [[0 25 :state2] [25 50 :state3]] 
                    :state2 [[50 100 :state1] [0 25 :state3]] 
                    :state3 [[0 25 :state1] [25 50 :state2]]})
